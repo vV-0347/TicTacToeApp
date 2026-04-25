@@ -8,13 +8,24 @@ public class TicTacToe {
 
     public static void main(String[] args) {
         int slot = getUserInput();
-        System.out.println("You selected slot: " + slot);
+
+        int[] position = convertSlotToIndex(slot);
+
+        System.out.println("Row: " + position[0]);
+        System.out.println("Column: " + position[1]);
     }
 
-    // Method to accept user input
+    // UC3: Get user input
     static int getUserInput() {
-        System.out.print("Enter a slot number (1-9): ");
-        int slot = scanner.nextInt();
-        return slot;
+        System.out.print("Enter a slot (1-9): ");
+        return scanner.nextInt();
+    }
+
+    // UC4: Convert slot to row & column
+    static int[] convertSlotToIndex(int slot) {
+        int row = (slot - 1) / 3;
+        int col = (slot - 1) % 3;
+
+        return new int[]{row, col};
     }
 }
