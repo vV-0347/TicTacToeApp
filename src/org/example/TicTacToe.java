@@ -1,34 +1,20 @@
 package org.example;
 
+import java.util.Scanner;
+
 public class TicTacToe {
 
-    // 3x3 board
-    static char[][] board = new char[3][3];
+    static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        initializeBoard();
-        printBoard();
+        int slot = getUserInput();
+        System.out.println("You selected slot: " + slot);
     }
 
-    // Initialize board with '-'
-    static void initializeBoard() {
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                board[row][col] = '-';
-            }
-        }
-    }
-
-    // Print the board
-    static void printBoard() {
-        System.out.println("-------------");
-        for (int row = 0; row < 3; row++) {
-            System.out.print("| ");
-            for (int col = 0; col < 3; col++) {
-                System.out.print(board[row][col] + " | ");
-            }
-            System.out.println();
-            System.out.println("-------------");
-        }
+    // Method to accept user input
+    static int getUserInput() {
+        System.out.print("Enter a slot number (1-9): ");
+        int slot = scanner.nextInt();
+        return slot;
     }
 }
