@@ -18,7 +18,6 @@ public class TicTacToe {
 
         initializeBoard();
 
-        // ✅ UC8: Continuous loop (no win/draw yet)
         while (true) {
 
             printBoard();
@@ -31,16 +30,34 @@ public class TicTacToe {
 
                 if (isValidMove(pos[0], pos[1])) {
                     placeMove(pos[0], pos[1], humanSymbol);
-                    isHumanTurn = false; // switch turn
+
+                    // ✅ UC9: Check win
+                    if (checkWin(humanSymbol)) {
+                        printBoard();
+                        System.out.println("Human wins!");
+                        break;
+                    }
+
+                    isHumanTurn = false;
+
                 } else {
                     System.out.println("Invalid move! Try again.");
-                    continue; // retry same turn
+                    continue;
                 }
 
             } else {
                 System.out.println("Computer's Turn");
+
                 computerMove();
-                isHumanTurn = true; // switch turn
+
+                // ✅ UC9: Check win
+                if (checkWin(computerSymbol)) {
+                    printBoard();
+                    System.out.println("Computer wins!");
+                    break;
+                }
+
+                isHumanTurn = true;
             }
         }
     }
@@ -107,5 +124,42 @@ public class TicTacToe {
                 break;
             }
         }
+    }
+
+    // ✅ UC9: Check winning condition
+    static boolean checkWin(char symbol) {
+
+        // Rows
+        for (int i = 0; i < 3; i++) {
+            if (board[i][0] == symbol &&
+                board[i][1] == symbol &&
+                board[i][2] == symbol) {
+                return true;
+            }
+        }
+
+        // Columns
+        for (int j = 0; j < 3; j++) {
+            if (board[0][j] == symbol &&
+                board[1][j] == symbol &&
+                board[2][j] == symbol) {
+                return true;
+            }
+        }
+
+        // Diagonals
+        if (board[0][0] == symbol &&
+            board[1][1] == symbol &&
+            board[2][2] == symbol) {
+            return true;
+        }
+
+        if (board[0][2] == symbol &&
+            board[1][1] == symbol &&
+            board[2][0] == symbol) {
+            return true;
+        }
+
+        return false;
     }
 }
