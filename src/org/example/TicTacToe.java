@@ -13,13 +13,13 @@ public class TicTacToe {
     static char computerSymbol = 'O';
 
     static boolean isHumanTurn = true;
-    static boolean gameOver = false;
 
     public static void main(String[] args) {
 
         initializeBoard();
 
-        while (!gameOver) {
+        // ✅ UC8: Continuous loop (no win/draw yet)
+        while (true) {
 
             printBoard();
 
@@ -42,25 +42,10 @@ public class TicTacToe {
                 computerMove();
                 isHumanTurn = true; // switch turn
             }
-
-            // Check game status
-            if (checkWin(humanSymbol)) {
-                printBoard();
-                System.out.println("Human wins!");
-                gameOver = true;
-            } else if (checkWin(computerSymbol)) {
-                printBoard();
-                System.out.println("Computer wins!");
-                gameOver = true;
-            } else if (isBoardFull()) {
-                printBoard();
-                System.out.println("It's a draw!");
-                gameOver = true;
-            }
         }
     }
 
-    // Initialize board
+    // UC1
     static void initializeBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -82,30 +67,30 @@ public class TicTacToe {
         }
     }
 
-    // Input
+    // UC3
     static int getUserInput() {
         System.out.print("Enter a slot (1-9): ");
         return scanner.nextInt();
     }
 
-    // Convert slot → row, col
+    // UC4
     static int[] convertSlotToIndex(int slot) {
         int row = (slot - 1) / 3;
         int col = (slot - 1) % 3;
         return new int[]{row, col};
     }
 
-    // Validate move
+    // UC5
     static boolean isValidMove(int row, int col) {
         return (row >= 0 && row < 3 && col >= 0 && col < 3 && board[row][col] == '-');
     }
 
-    // Place move
+    // UC6
     static void placeMove(int row, int col, char symbol) {
         board[row][col] = symbol;
     }
 
-    // Computer move (random)
+    // UC7
     static void computerMove() {
         int row, col;
 
@@ -122,37 +107,5 @@ public class TicTacToe {
                 break;
             }
         }
-    }
-
-    // ✅ Check win
-    static boolean checkWin(char symbol) {
-
-        // Rows & Columns
-        for (int i = 0; i < 3; i++) {
-            if ((board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol) ||
-                (board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol)) {
-                return true;
-            }
-        }
-
-        // Diagonals
-        if ((board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol) ||
-            (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    // ✅ Check draw
-    static boolean isBoardFull() {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[i][j] == '-') {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 }
