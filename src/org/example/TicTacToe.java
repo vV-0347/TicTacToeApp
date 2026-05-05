@@ -31,10 +31,17 @@ public class TicTacToe {
                 if (isValidMove(pos[0], pos[1])) {
                     placeMove(pos[0], pos[1], humanSymbol);
 
-                    // ✅ UC9: Check win
+                    // UC9: Check win
                     if (checkWin(humanSymbol)) {
                         printBoard();
                         System.out.println("Human wins!");
+                        break;
+                    }
+
+                    // ✅ UC10: Check draw
+                    if (isBoardFull()) {
+                        printBoard();
+                        System.out.println("It's a draw!");
                         break;
                     }
 
@@ -50,10 +57,17 @@ public class TicTacToe {
 
                 computerMove();
 
-                // ✅ UC9: Check win
+                // UC9: Check win
                 if (checkWin(computerSymbol)) {
                     printBoard();
                     System.out.println("Computer wins!");
+                    break;
+                }
+
+                // ✅ UC10: Check draw
+                if (isBoardFull()) {
+                    printBoard();
+                    System.out.println("It's a draw!");
                     break;
                 }
 
@@ -126,10 +140,9 @@ public class TicTacToe {
         }
     }
 
-    // ✅ UC9: Check winning condition
+    // UC9
     static boolean checkWin(char symbol) {
 
-        // Rows
         for (int i = 0; i < 3; i++) {
             if (board[i][0] == symbol &&
                 board[i][1] == symbol &&
@@ -138,7 +151,6 @@ public class TicTacToe {
             }
         }
 
-        // Columns
         for (int j = 0; j < 3; j++) {
             if (board[0][j] == symbol &&
                 board[1][j] == symbol &&
@@ -147,7 +159,6 @@ public class TicTacToe {
             }
         }
 
-        // Diagonals
         if (board[0][0] == symbol &&
             board[1][1] == symbol &&
             board[2][2] == symbol) {
@@ -161,5 +172,17 @@ public class TicTacToe {
         }
 
         return false;
+    }
+
+    // ✅ UC10: Check draw
+    static boolean isBoardFull() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == '-') {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
