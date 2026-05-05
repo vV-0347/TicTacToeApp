@@ -12,26 +12,52 @@ public class TicTacToe {
     static char humanSymbol = 'X';
     static char computerSymbol = 'O';
 
+    static boolean isHumanTurn = true;
+    static boolean gameOver = false;
+
     public static void main(String[] args) {
+
         initializeBoard();
-        printBoard();
 
-        // Human move
-        int slot = getUserInput();
-        int[] pos = convertSlotToIndex(slot);
+        while (!gameOver) {
 
-        if (isValidMove(pos[0], pos[1])) {
-            placeMove(pos[0], pos[1], humanSymbol);
-        } else {
-            System.out.println("Invalid move!");
+            printBoard();
+
+            if (isHumanTurn) {
+                System.out.println("Human's Turn");
+
+                int slot = getUserInput();
+                int[] pos = convertSlotToIndex(slot);
+
+                if (isValidMove(pos[0], pos[1])) {
+                    placeMove(pos[0], pos[1], humanSymbol);
+                    isHumanTurn = false; // switch turn
+                } else {
+                    System.out.println("Invalid move! Try again.");
+                    continue; // retry same turn
+                }
+
+            } else {
+                System.out.println("Computer's Turn");
+                computerMove();
+                isHumanTurn = true; // switch turn
+            }
+
+            // Check game status
+            if (checkWin(humanSymbol)) {
+                printBoard();
+                System.out.println("Human wins!");
+                gameOver = true;
+            } else if (checkWin(computerSymbol)) {
+                printBoard();
+                System.out.println("Computer wins!");
+                gameOver = true;
+            } else if (isBoardFull()) {
+                printBoard();
+                System.out.println("It's a draw!");
+                gameOver = true;
+            }
         }
-
-        printBoard();
-
-        // ✅ UC7: Computer move
-        computerMove();
-
-        printBoard();
     }
 
     // Initialize board
@@ -56,7 +82,7 @@ public class TicTacToe {
         }
     }
 
-    // User input
+    // Input
     static int getUserInput() {
         System.out.print("Enter a slot (1-9): ");
         return scanner.nextInt();
@@ -79,12 +105,12 @@ public class TicTacToe {
         board[row][col] = symbol;
     }
 
-    // ✅ UC7: Computer random move
+    // Computer move (random)
     static void computerMove() {
         int row, col;
 
         while (true) {
-            int slot = random.nextInt(9) + 1; // 1–9
+            int slot = random.nextInt(9) + 1;
             int[] pos = convertSlotToIndex(slot);
 
             row = pos[0];
@@ -96,5 +122,37 @@ public class TicTacToe {
                 break;
             }
         }
+    }
+
+    // ✅ Check win
+    static boolean checkWin(char symbol) {
+
+        // Rows & Columns
+        for (int i = 0; i < 3; i++) {
+            if ((board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol) ||
+                (board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol)) {
+                return true;
+            }
+        }
+
+        // Diagonals
+        if ((board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol) ||
+            (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // ✅ Check draw
+    static boolean isBoardFull() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == '-') {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
